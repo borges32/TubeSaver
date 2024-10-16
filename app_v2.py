@@ -14,7 +14,7 @@ def choose_directory():
 # Função para atualizar a barra de progresso
 def progress_hook(d):
     if d['status'] == 'downloading':
-        p = d['_percent_str']
+        p = d['_percent_str']      
         progress['value'] = float(p.replace('%', ''))
         root.update_idletasks()
 
@@ -22,6 +22,7 @@ def progress_hook(d):
 def download_youtube_audio(audio_url, output_path):
     ydl_opts = {
         'format': 'bestaudio/best',
+        'progress_hooks': [progress_hook],
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
@@ -42,6 +43,7 @@ def download_youtube_video(video_url, output_path):
         'format': 'best[ext=mp4]',  # Forçar download do melhor formato disponível em MP4
         'outtmpl': f'{output_path}/%(title)s.%(ext)s',  # Nome do arquivo baseado no título do vídeo
         'merge_output_format': 'mp4',  # Garantir que o formato final seja MP4
+        'progress_hooks': [progress_hook],
         'postprocessors': [{
             'key': 'FFmpegVideoConvertor',
             'preferedformat': 'mp4'  # Converter para MP4 se necessário
@@ -72,23 +74,7 @@ def download():
     else:
         download_youtube_video(url, destination)
 
-    ydl_opts = {
-        'format': 'bestaudio/best' if download_type == 'MP3' else 'bestvideo+bestaudio',
-        'outtmpl': os.path.join(destination, '%(title)s.%(ext)s'),
-        'progress_hooks': [progress_hook],
-        'postprocessors': [{
-            'key': 'FFmpegExtractAudio',
-            'preferredcodec': 'mp3',
-            'preferredquality': '192',
-        }] if download_type == 'MP3' else []
-    }
-
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        try:
-            ydl.download([url])
-            messagebox.showinfo("Sucesso", f"{download_type} baixado com sucesso!")
-        except Exception as e:
-            messagebox.showerror("Erro", f"Erro ao baixar: {str(e)}")
+   
 
 # Criar a interface gráfica
 root = tk.Tk()
