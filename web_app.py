@@ -21,6 +21,9 @@ def download_youtube_audio(video_url, output_path):
         'outtmpl': f'{output_path}/%(title)s_%(id)s.%(ext)s',
         'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
     }
+    cookies_path = os.path.join(os.path.dirname(__file__), 'cookies.txt')
+    if os.path.exists(cookies_path):
+        ydl_opts['cookies'] = cookies_path
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(video_url)
         filename = ydl.prepare_filename(info)
@@ -34,6 +37,9 @@ def download_youtube_video(video_url, output_path):
         'merge_output_format': 'mp4',
         'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
     }
+    cookies_path = os.path.join(os.path.dirname(__file__), 'cookies.txt')
+    if os.path.exists(cookies_path):
+        ydl_opts['cookies'] = cookies_path
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(video_url)
         filename = ydl.prepare_filename(info)

@@ -6,4 +6,5 @@ services:
       - "5000:5000"
     volumes:
       - ./downloads:/app/downloads
-    restart: unless-stopped
+      - ./cookies.txt:/app/cookies.txt
+    restart: always
