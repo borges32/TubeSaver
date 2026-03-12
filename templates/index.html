@@ -32,6 +32,16 @@
                 <option value="mp4">Vídeo (MP4)</option>
             </select>
         </div>
+        <div class="mb-3" id="max-height-group" style="display:none;">
+            <label for="max_height" class="form-label">Resolução máxima (opcional)</label>
+            <select class="form-select" id="max_height" name="max_height">
+                <option value="">Melhor disponível</option>
+                <option value="2160">2160p (4K)</option>
+                <option value="1440">1440p (2K)</option>
+                <option value="1080">1080p (Full HD)</option>
+                <option value="720">720p (HD)</option>
+            </select>
+        </div>
         <button type="submit" class="btn btn-primary w-100">Extrair</button>
     </form>
     <div id="loading" class="text-center mt-4">
@@ -60,6 +70,16 @@
 </div>
 <script>
     const form = document.getElementById('downloadForm');
+    const tipoField = document.getElementById('tipo');
+    const maxHeightGroup = document.getElementById('max-height-group');
+
+    function toggleMaxHeight() {
+        maxHeightGroup.style.display = tipoField.value === 'mp4' ? 'block' : 'none';
+    }
+
+    toggleMaxHeight();
+    tipoField.addEventListener('change', toggleMaxHeight);
+
     form.addEventListener('submit', function() {
         document.getElementById('loading').style.display = 'block';
     });
